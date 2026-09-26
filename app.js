@@ -4,6 +4,40 @@ const container = document.getElementById('app-container');
 
 const estiloTitulo = "text-align: center; color: #004890; text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff, 0 6px 10px rgba(0,0,0,0.15); font-size: 2.5em; font-weight: 700; margin-bottom: 30px;";
 
+// ----- FUNÇÕES DE ÁUDIO -----
+let isMusicPlaying = false;
+
+function toggleMusic() {
+    const music = document.getElementById('bgMusic');
+    const btn = document.getElementById('btn-music-toggle');
+    
+    if (isMusicPlaying) {
+        music.pause();
+        isMusicPlaying = false;
+        btn.innerHTML = '🔇';
+    } else {
+        // Tenta reproduzir. O 'catch' evita erros se o áudio não for encontrado
+        music.play().then(() => {
+            isMusicPlaying = true;
+            btn.innerHTML = '🔊';
+        }).catch(err => console.log("Erro ao reproduzir o áudio:", err));
+    }
+}
+
+// Inicia a música automaticamente após a primeira interação do usuário
+function iniciarMusica() {
+    const music = document.getElementById('bgMusic');
+    const btn = document.getElementById('btn-music-toggle');
+    
+    if (!isMusicPlaying) {
+        music.play().then(() => {
+            isMusicPlaying = true;
+            btn.innerHTML = '🔊';
+        }).catch(err => console.log("Não foi possível iniciar a música automaticamente.", err));
+    }
+}
+// -----------------------------
+
 // ----- FUNÇÃO TELA CHEIA -----
 function toggleFullScreen() {
     const doc = window.document;
@@ -50,6 +84,8 @@ function removerIndicador() {
 // ------------------------------------------
 
 function renderizarRegras() {
+    iniciarMusica(); // Tenta iniciar a música assim que o botão "Iniciar Jogo" for clicado
+
     container.innerHTML = `<h2 style='${estiloTitulo}'>Instruções de Jogo</h2>`;
     
     dbRegras.forEach((secao, index) => {
@@ -71,7 +107,7 @@ function renderizarRegras() {
     const divBotao = document.createElement('div');
     divBotao.style.textAlign = "center";
     divBotao.style.margin = "40px 0 60px 0"; 
-    divBotao.innerHTML = `<button onclick="renderizarSelecaoCores()">Ir para Roleta de Cartões 🎲</button>`;
+    divBotao.innerHTML = `<button class="btn-principal" onclick="renderizarSelecaoCores()">Ir para Roleta de Cartões 🎲</button>`;
     
     container.appendChild(divBotao);
 
@@ -92,10 +128,13 @@ function renderizarSelecaoCores() {
     container.innerHTML = `
         <h2 style='${estiloTitulo}'>Qual cor caiu na roleta?</h2>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
-            <button style="background-color: #39B54A; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #207A2E;" onclick="sortearCarta('Verde')">VERDE</button>
-            <button style="background-color: #0071BC; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #004890;" onclick="sortearCarta('Azul')">AZUL</button>
-            <button style="background-color: #FFCB05; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #D99B00;" onclick="sortearCarta('Amarelo')">AMARELO</button>
-            <button style="background-color: #ED1C24; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #A80005;" onclick="sortearCarta('Vermelho')">VERMELHO</button>
+            <button style="background-color: #39B54A; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #207A2E; border: none; border-radius: 40px; font-family: 'Fredoka', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.1s ease-in-out;" onmousedown="this.style.transform='translateY(6px)'; this.style.boxShadow='0 0px 0 #207A2E';" onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 0 #207A2E';" onclick="sortearCarta('Verde')">VERDE</button>
+            
+            <button style="background-color: #0071BC; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #004890; border: none; border-radius: 40px; font-family: 'Fredoka', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.1s ease-in-out;" onmousedown="this.style.transform='translateY(6px)'; this.style.boxShadow='0 0px 0 #004890';" onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 0 #004890';" onclick="sortearCarta('Azul')">AZUL</button>
+            
+            <button style="background-color: #FFCB05; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #D99B00; border: none; border-radius: 40px; font-family: 'Fredoka', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.1s ease-in-out;" onmousedown="this.style.transform='translateY(6px)'; this.style.boxShadow='0 0px 0 #D99B00';" onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 0 #D99B00';" onclick="sortearCarta('Amarelo')">AMARELO</button>
+            
+            <button style="background-color: #ED1C24; color: #ffffff; width: 100%; max-width: 300px; height: 80px; font-size: 1.5em; box-shadow: 0 8px 0 #A80005; border: none; border-radius: 40px; font-family: 'Fredoka', sans-serif; font-weight: 700; cursor: pointer; transition: all 0.1s ease-in-out;" onmousedown="this.style.transform='translateY(6px)'; this.style.boxShadow='0 0px 0 #A80005';" onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 0 #A80005';" onclick="sortearCarta('Vermelho')">VERMELHO</button>
         </div>
     `;
 }
@@ -112,8 +151,8 @@ function sortearCarta(cor) {
 
     container.innerHTML = `
         <div style="text-align: center; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-            <button style="background-color: #004890; color: white; box-shadow: 0 6px 0 #002855; font-size: 1.1em; padding: 12px 20px;" onclick="renderizarSelecaoCores()">⬅ Voltar para Roleta</button>
-            <button style="background-color: #FFCB05; color: #004890; box-shadow: 0 6px 0 #D99B00; font-size: 1.1em; padding: 12px 20px;" onclick="sortearCarta('${cor}')">Sortear outra ${cor} 🎲</button>
+            <button class="btn-principal" style="background-color: #004890; color: white; box-shadow: 0 6px 0 #002855; font-size: 1.1em; padding: 12px 20px;" onclick="renderizarSelecaoCores()">⬅ Voltar para Roleta</button>
+            <button class="btn-principal" style="background-color: #FFCB05; color: #004890; box-shadow: 0 6px 0 #D99B00; font-size: 1.1em; padding: 12px 20px;" onclick="sortearCarta('${cor}')">Sortear outra ${cor} 🎲</button>
         </div>
     `;
 
