@@ -25,20 +25,16 @@
             min-height: 100vh;
         }
 
-        /* ----- NOVO: Botão de Tela Cheia Flutuante ----- */
-        .btn-fullscreen {
+        /* ----- Botões Flutuantes no Topo ----- */
+        .btn-fullscreen, .btn-music {
             position: fixed;
             top: 15px;
-            right: 15px;
             width: 55px;
             height: 55px;
-            background-color: #004890;
-            color: white;
             border: none;
             border-radius: 50%;
             font-size: 1.8em;
             cursor: pointer;
-            box-shadow: 0 6px 0 #002855, 0 8px 15px rgba(0,0,0,0.3);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -47,8 +43,27 @@
             transition: all 0.1s ease-in-out;
         }
 
+        /* Tela Cheia no canto direito */
+        .btn-fullscreen {
+            right: 15px;
+            background-color: #004890;
+            color: white;
+            box-shadow: 0 6px 0 #002855, 0 8px 15px rgba(0,0,0,0.3);
+        }
         .btn-fullscreen:active {
             box-shadow: 0 0px 0 #002855;
+            transform: translateY(6px);
+        }
+
+        /* Música no canto esquerdo */
+        .btn-music {
+            left: 15px;
+            background-color: #FFCB05;
+            color: #004890;
+            box-shadow: 0 6px 0 #D99B00, 0 8px 15px rgba(0,0,0,0.3);
+        }
+        .btn-music:active {
+            box-shadow: 0 0px 0 #D99B00;
             transform: translateY(6px);
         }
 
@@ -61,7 +76,7 @@
             filter: drop-shadow(0px 10px 10px rgba(0,0,0,0.15));
         }
 
-        button { 
+        button.btn-principal { 
             font-family: 'Fredoka', sans-serif;
             font-weight: 700;
             padding: 15px 40px; 
@@ -76,11 +91,11 @@
             text-transform: uppercase;
         }
 
-        button:hover { 
+        button.btn-principal:hover { 
             background-color: #FFD633; 
         }
 
-        button:active {
+        button.btn-principal:active {
             box-shadow: 0 0px 0 #D99B00, 0 5px 10px rgba(0,0,0,0.2);
             transform: translateY(8px);
         }
@@ -207,7 +222,13 @@
 </head>
 <body>
 
-    <!-- Botão de Tela Cheia -->
+    <!-- Reprodutor de Áudio Invisível (Loop ativado) -->
+    <audio id="bgMusic" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Botões Flutuantes -->
+    <button class="btn-music" id="btn-music-toggle" onclick="toggleMusic()" title="Ligar/Desligar Música">🔇</button>
     <button class="btn-fullscreen" onclick="toggleFullScreen()" title="Alternar Tela Cheia">⛶</button>
 
     <img src="logo-jogo.png" alt="A Trilha do Sorriso Saudável" class="logo-jogo">
@@ -217,7 +238,7 @@
             
             <h2>Bem-vindo!</h2>
             <p style="font-size: 1.3em; margin-bottom: 30px; color: #444;">Prepare os peões e a roleta para começar a aprender brincando.</p>
-            <button onclick="renderizarRegras()">▶ Iniciar Jogo</button>
+            <button class="btn-principal" onclick="renderizarRegras()">▶ Iniciar Jogo</button>
 
             <div class="creditos-rodape">
                 <p style="margin: 0 0 5px 0; font-weight: 700; color: #004890;">Disciplina de Odontopediatria da UFC - Sobral</p>
@@ -232,7 +253,7 @@
     <!-- Importando os arquivos -->
     <script src="regras.js"></script>
     <script src="perguntas.js"></script>
-    <script src="app.js?v=4"></script>
+    <script src="app.js?v=5"></script>
 
 </body>
 </html>
