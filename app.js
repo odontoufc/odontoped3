@@ -4,6 +4,10 @@ const container = document.getElementById('app-container');
 
 const estiloTitulo = "text-align: center; color: #004890; text-shadow: -3px -3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, 3px 3px 0 #fff, 0 6px 10px rgba(0,0,0,0.15); font-size: 2.5em; font-weight: 700; margin-bottom: 30px;";
 
+// ----- NOVO: CONTROLE DE CARTAS DISPONÍVEIS -----
+// Cria uma cópia do banco original. Funciona como um "baralho" que vai esvaziando.
+let cartasDisponiveis = [...dbPerguntas];
+
 // ----- FUNÇÕES DE ÁUDIO -----
 let isMusicPlaying = false;
 
@@ -16,7 +20,6 @@ function toggleMusic() {
         isMusicPlaying = false;
         btn.innerHTML = '🔇';
     } else {
-        // Tenta reproduzir. O 'catch' evita erros se o áudio não for encontrado
         music.play().then(() => {
             isMusicPlaying = true;
             btn.innerHTML = '🔊';
@@ -24,7 +27,6 @@ function toggleMusic() {
     }
 }
 
-// Inicia a música automaticamente após a primeira interação do usuário
 function iniciarMusica() {
     const music = document.getElementById('bgMusic');
     const btn = document.getElementById('btn-music-toggle');
@@ -84,7 +86,7 @@ function removerIndicador() {
 // ------------------------------------------
 
 function renderizarRegras() {
-    iniciarMusica(); // Tenta iniciar a música assim que o botão "Iniciar Jogo" for clicado
+    iniciarMusica(); 
 
     container.innerHTML = `<h2 style='${estiloTitulo}'>Instruções de Jogo</h2>`;
     
@@ -140,14 +142,20 @@ function renderizarSelecaoCores() {
 }
 
 function sortearCarta(cor) {
-    const cartoesDaCor = dbPerguntas.filter(item => item.cor === cor);
+    // Busca na "pilha" atual apenas os cartões da cor que ainda não foram sorteados
+    const cartoesDaCor = cartasDisponiveis.filter(item => item.cor === cor);
     
+    // Se não houver mais cartas dessa cor, emite um alerta
     if (cartoesDaCor.length === 0) {
-        alert("Ainda não há cartas cadastradas para esta cor.");
+        alert(`Todas as cartas da cor ${cor} já foram sorteadas! O jogador deve girar a roleta novamente.`);
         return;
     }
     
+    // Sorteia a carta
     const item = cartoesDaCor[Math.floor(Math.random() * cartoesDaCor.length)];
+
+    // REMOVE A CARTA DO BARALHO GLOBAL PARA NÃO REPETIR
+    cartasDisponiveis = cartasDisponiveis.filter(carta => carta.id !== item.id);
 
     container.innerHTML = `
         <div style="text-align: center; margin-bottom: 20px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
