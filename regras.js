@@ -6,15 +6,15 @@ const dbRegras = [
         regras: [
             "Participantes jogam individualmente ou em duplas.",
             "Jogadores posicionam peões na casa 'Início: Chegada dos Primeiros Dentes de Leite'.",
-            "Cartas de perguntas e respostas são embaralhadas e dispostas ao lado do tabuleiro."
+            "O aplicativo deve estar aberto em um celular ou tablet para sortear as perguntas durante a partida."
         ]
     },
     {
         secao: "2. Dinâmica do Turno",
         regras: [
-            "O jogador gira a roleta.",
+            "O jogador gira a roleta física do jogo.",
             "A cor da roleta determina a categoria da pergunta (Verde, Azul, Amarelo ou Vermelho).",
-            "O mediador lê a pergunta da carta sorteada para o jogador."
+            "O mediador clica na cor correspondente no aplicativo e lê a pergunta sorteada na tela para o jogador da vez."
         ]
     },
     {
@@ -36,7 +36,7 @@ const dbRegras = [
         secao: "5. Fim do Jogo e Vitória",
         regras: [
             "Vence quem chegar à casa 'Dentição Permanente Completa e Saudável'.",
-            "Participantes que completarem a trilha recebem 1 folheto."
+            "Participantes que completarem a trilha recebem um folheto explicativo."
         ]
     }
 ];
